@@ -1,0 +1,6 @@
+{
+  "name": "Blogify",
+  "description": "A full-stack MERN blogging platform with editorial reading, JWT auth, and Cloudinary cover uploads.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
