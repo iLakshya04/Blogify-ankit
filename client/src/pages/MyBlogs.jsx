@@ -53,21 +53,21 @@ export default function MyBlogs() {
 
   return (
     <main className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
-      <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-gray-200">
+      <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-stone-200">
         <div>
-          <h1 className="font-serif text-3xl font-bold tracking-tight text-gray-900">
+          <h1 className="font-display text-3xl font-bold tracking-tight text-[#111214]">
             My Blogs
           </h1>
-          <p className="mt-1 text-sm text-gray-600">
+          <p className="mt-1 text-sm text-stone-600">
             Manage your published stories.
           </p>
         </div>
 
         <Link
           to="/write"
-          className="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-gray-900 hover:bg-gray-800 rounded-lg transition-colors whitespace-nowrap shrink-0"
+          className="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-[#121316] hover:bg-stone-800 rounded-lg transition-colors whitespace-nowrap shrink-0"
         >
-          <PenLine className="w-4 h-4" />
+          <PenLine className="w-4 h-4 text-amber-400" />
           <span>Write New Blog</span>
         </Link>
       </div>
@@ -87,34 +87,34 @@ export default function MyBlogs() {
           {Array.from({ length: 3 }).map((_, idx) => (
             <div
               key={idx}
-              className="p-4 bg-white border border-gray-200 rounded-xl flex items-center gap-4 animate-pulse"
+              className="p-4 bg-white border border-stone-200 rounded-xl flex items-center gap-4 animate-pulse"
             >
-              <div className="w-24 h-16 rounded-lg bg-gray-200 shrink-0" />
+              <div className="w-24 h-16 rounded-lg bg-stone-200 shrink-0" />
               <div className="flex-1 space-y-2">
-                <div className="h-5 bg-gray-200 rounded w-1/2" />
-                <div className="h-3.5 bg-gray-100 rounded w-28" />
+                <div className="h-5 bg-stone-200 rounded w-1/2" />
+                <div className="h-3.5 bg-stone-100 rounded w-28" />
               </div>
             </div>
           ))}
         </div>
       ) : blogs.length === 0 ? (
-        <div className="mt-10 p-10 bg-white border border-gray-200 rounded-xl text-center">
-          <h2 className="text-lg font-semibold text-gray-900">
+        <div className="mt-10 p-10 bg-white border border-stone-200 rounded-xl text-center">
+          <h2 className="font-display text-lg font-semibold text-[#111214]">
             You haven&apos;t published any stories yet
           </h2>
-          <p className="mt-1.5 text-sm text-gray-600">
+          <p className="mt-1.5 text-sm text-stone-600">
             Write your first blog post to see it listed here.
           </p>
           <Link
             to="/write"
-            className="mt-6 inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-gray-900 hover:bg-gray-800 rounded-lg transition-colors"
+            className="mt-6 inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-[#121316] hover:bg-stone-800 rounded-lg transition-colors"
           >
-            <PenLine className="w-4 h-4" />
+            <PenLine className="w-4 h-4 text-amber-400" />
             <span>Write New Blog</span>
           </Link>
         </div>
       ) : (
-        <div className="mt-6 divide-y divide-gray-200 bg-white border border-gray-200 rounded-xl overflow-hidden">
+        <div className="mt-6 divide-y divide-stone-200 bg-white border border-stone-200 rounded-xl overflow-hidden">
           {blogs.map((blog) => {
             const imageUrl = blog.coverImage?.url;
             const hasSafeImage =
@@ -132,7 +132,7 @@ export default function MyBlogs() {
                 <div className="flex items-center gap-4 min-w-0">
                   <Link
                     to={`/blogs/${blog._id}`}
-                    className="w-24 h-16 rounded-lg bg-gray-100 border border-gray-200 overflow-hidden shrink-0"
+                    className="w-24 h-16 rounded-lg bg-stone-100 border border-stone-200 overflow-hidden shrink-0"
                   >
                     {hasSafeImage ? (
                       <img
@@ -145,7 +145,7 @@ export default function MyBlogs() {
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center text-gray-400">
+                      <div className="w-full h-full flex items-center justify-center text-stone-400">
                         <FileText className="w-5 h-5" />
                       </div>
                     )}
@@ -154,11 +154,11 @@ export default function MyBlogs() {
                   <div className="min-w-0">
                     <Link
                       to={`/blogs/${blog._id}`}
-                      className="block text-base font-semibold text-gray-900 hover:text-gray-700 truncate"
+                      className="block font-display text-base font-semibold text-[#111214] hover:text-amber-700 truncate transition-colors"
                     >
                       {blog.title}
                     </Link>
-                    <p className="mt-1 text-xs text-gray-500">
+                    <p className="mt-1 text-xs text-stone-500 tabular-nums">
                       Published {formatDate(blog.createdAt)}
                     </p>
                   </div>
@@ -173,7 +173,7 @@ export default function MyBlogs() {
                       type="button"
                       onClick={() => setConfirmId(null)}
                       disabled={deletingId === blog._id}
-                      className="px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 rounded-lg"
+                      className="px-3 py-1.5 text-xs font-medium text-stone-700 bg-white border border-stone-200 hover:bg-stone-50 rounded-lg"
                     >
                       Cancel
                     </button>
@@ -190,14 +190,14 @@ export default function MyBlogs() {
                   <div className="flex items-center gap-2 shrink-0">
                     <Link
                       to={`/blogs/${blog._id}`}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-200 hover:border-gray-300 hover:text-gray-900 rounded-lg transition-colors whitespace-nowrap"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-stone-700 bg-white border border-stone-200 hover:border-stone-300 hover:text-[#111214] rounded-lg transition-colors whitespace-nowrap"
                     >
                       <Eye className="w-3.5 h-3.5" />
                       <span>View</span>
                     </Link>
                     <Link
                       to={`/edit/${blog._id}`}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-200 hover:border-gray-300 hover:text-gray-900 rounded-lg transition-colors whitespace-nowrap"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-stone-700 bg-white border border-stone-200 hover:border-stone-300 hover:text-[#111214] rounded-lg transition-colors whitespace-nowrap"
                     >
                       <Pencil className="w-3.5 h-3.5" />
                       <span>Edit</span>

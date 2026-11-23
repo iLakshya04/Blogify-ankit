@@ -91,8 +91,8 @@ Base prefix: `/api`
 - `POST /api/blogs` — Create blog with `multipart/form-data` cover image (Protected)
 - `PUT /api/blogs/:id` — Update blog and optionally replace cover image (Owner only)
 - `DELETE /api/blogs/:id` — Delete blog, Cloudinary cover, and comments (Owner only)
-- `POST /api/blogs/:blogId/comments` — Add comment to a blog (Protected)
-- `DELETE /api/comments/:commentId` — Delete a comment (Owner only)
+- `POST /api/blogs/:blogId/comments` — Add a top-level comment or nested reply (`parentComment`) to a blog (Protected)
+- `DELETE /api/comments/:commentId` — Delete a comment, soft-deleting parents with replies and pruning empty deleted ancestors (Owner only)
 
 ---
 

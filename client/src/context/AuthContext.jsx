@@ -67,9 +67,9 @@ export function AuthProvider({ children }) {
   return (
     <AuthContext.Provider value={{ user, loading, login, signup, logout }}>
       {loading ? (
-        <div className="min-h-screen flex items-center justify-center bg-[#FAFAFA]">
+        <div className="min-h-screen flex items-center justify-center bg-[#F6F5F2]">
           <div
-            className="h-6 w-6 rounded-full border-2 border-gray-300 border-t-gray-900 animate-spin"
+            className="h-6 w-6 rounded-full border-2 border-stone-300 border-t-[#121316] animate-spin"
             aria-label="Loading session"
           />
         </div>

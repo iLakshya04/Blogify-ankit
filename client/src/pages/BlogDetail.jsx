@@ -58,17 +58,33 @@ export default function BlogDetail() {
     }
   };
 
+  const handleCommentDeleted = (deletedId, responseData) => {
+    if (responseData?.softDeleted && responseData.comment) {
+      setComments((prev) =>
+        prev.map((c) => (c._id === deletedId ? responseData.comment : c))
+      );
+      return;
+    }
+
+    const idsToRemove = new Set(
+      Array.isArray(responseData?.removedIds) && responseData.removedIds.length > 0
+        ? responseData.removedIds
+        : [deletedId]
+    );
+    setComments((prev) => prev.filter((c) => !idsToRemove.has(c._id)));
+  };
+
   if (loading) {
     return (
       <main className="max-w-3xl mx-auto py-10 px-4 animate-pulse">
-        <div className="h-4 bg-gray-200 rounded w-32 mb-8" />
-        <div className="h-9 bg-gray-200 rounded w-3/4 mb-4" />
-        <div className="h-4 bg-gray-100 rounded w-48 mb-8" />
-        <div className="h-[340px] bg-gray-200 rounded-xl mb-8" />
+        <div className="h-4 bg-stone-200 rounded w-32 mb-8" />
+        <div className="h-9 bg-stone-200 rounded w-3/4 mb-4" />
+        <div className="h-4 bg-stone-100 rounded w-48 mb-8" />
+        <div className="h-[340px] bg-stone-200 rounded-xl mb-8" />
         <div className="space-y-3">
-          <div className="h-4 bg-gray-100 rounded w-full" />
-          <div className="h-4 bg-gray-100 rounded w-full" />
-          <div className="h-4 bg-gray-100 rounded w-5/6" />
+          <div className="h-4 bg-stone-100 rounded w-full" />
+          <div className="h-4 bg-stone-100 rounded w-full" />
+          <div className="h-4 bg-stone-100 rounded w-5/6" />
         </div>
       </main>
     );
@@ -79,16 +95,18 @@ export default function BlogDetail() {
       <main className="max-w-3xl mx-auto py-12 px-4">
         <Link
           to="/"
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 mb-8"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-stone-600 hover:text-[#111214] mb-8"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to all blogs</span>
         </Link>
 
-        <div className="p-8 bg-white border border-gray-200 rounded-xl text-center">
+        <div className="p-8 bg-white border border-stone-200 rounded-xl text-center">
           <AlertCircle className="w-8 h-8 text-red-600 mx-auto mb-3" />
-          <h1 className="text-lg font-semibold text-gray-900">Story unavailable</h1>
-          <p className="mt-1.5 text-sm text-gray-600">
+          <h1 className="font-display text-lg font-semibold text-[#111214]">
+            Story unavailable
+          </h1>
+          <p className="mt-1.5 text-sm text-stone-600">
             {error || "This blog could not be found."}
           </p>
         </div>
@@ -111,14 +129,14 @@ export default function BlogDetail() {
     <main className="max-w-3xl mx-auto py-10 px-4">
       <Link
         to="/"
-        className="inline-flex items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+        className="inline-flex items-center gap-1.5 text-sm font-medium text-stone-600 hover:text-[#111214] transition-colors"
       >
         <ArrowLeft className="w-4 h-4" />
         <span>Back to all blogs</span>
       </Link>
 
       <article className="mt-6">
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 leading-tight">
+        <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-[#111214] leading-tight [text-wrap:balance]">
           {blog.title}
         </h1>
 
@@ -126,14 +144,16 @@ export default function BlogDetail() {
           <div className="flex items-center gap-3">
             <span
               aria-hidden="true"
-              className="w-9 h-9 rounded-full bg-gray-900 text-white text-sm font-semibold flex items-center justify-center shrink-0"
+              className="w-9 h-9 rounded-full bg-[#121316] text-amber-400 text-sm font-semibold flex items-center justify-center shrink-0"
             >
               {authorInitial}
             </span>
-            <div className="flex items-center gap-2 text-sm text-gray-600">
-              <span className="font-medium text-gray-900">{authorName}</span>
+            <div className="flex items-center gap-2 text-sm text-stone-600">
+              <span className="font-medium text-[#111214]">{authorName}</span>
               <span aria-hidden="true">·</span>
-              <time dateTime={blog.createdAt}>{formatDate(blog.createdAt)}</time>
+              <time dateTime={blog.createdAt} className="tabular-nums">
+                {formatDate(blog.createdAt)}
+              </time>
             </div>
           </div>
 
@@ -141,7 +161,7 @@ export default function BlogDetail() {
             <div className="flex items-center gap-2.5">
               <Link
                 to={`/edit/${blog._id}`}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 hover:border-gray-300 hover:text-gray-900 rounded-lg transition-colors whitespace-nowrap"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-stone-700 bg-white border border-stone-200 hover:border-stone-300 hover:text-[#111214] rounded-lg transition-colors whitespace-nowrap"
               >
                 <Pencil className="w-3.5 h-3.5" />
                 <span>Edit</span>
@@ -172,7 +192,7 @@ export default function BlogDetail() {
                 type="button"
                 onClick={() => setConfirmDelete(false)}
                 disabled={deleting}
-                className="px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 rounded-lg"
+                className="px-3 py-1.5 text-xs font-medium text-stone-700 bg-white border border-stone-200 hover:bg-stone-50 rounded-lg"
               >
                 Cancel
               </button>
@@ -188,7 +208,7 @@ export default function BlogDetail() {
           </div>
         )}
 
-        <div className="my-6 rounded-xl overflow-hidden bg-gray-100 border border-gray-200">
+        <div className="my-6 rounded-xl overflow-hidden bg-stone-100 border border-stone-200">
           {hasSafeImage ? (
             <img
               src={imageUrl}
@@ -198,29 +218,28 @@ export default function BlogDetail() {
               className="w-full max-h-[440px] object-cover"
             />
           ) : (
-            <div className="h-[260px] w-full flex flex-col items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 text-gray-400">
+            <div className="h-[260px] w-full flex flex-col items-center justify-center bg-gradient-to-br from-stone-100 to-stone-200 text-stone-400">
               <FileText className="w-9 h-9 mb-2" />
-              <span className="text-sm text-gray-500">Cover image unavailable</span>
+              <span className="text-sm text-stone-500">Cover image unavailable</span>
             </div>
           )}
         </div>
 
-        <div className="whitespace-pre-line text-lg leading-8 text-gray-800">
+        <div className="whitespace-pre-line text-lg leading-8 text-stone-800">
           {blog.body}
         </div>
       </article>
 
-      <hr className="mt-12 border-gray-200" />
+      <hr className="mt-12 border-stone-200" />
 
       <CommentSection
         blogId={blog._id}
+        blogAuthorId={blog.author?._id}
         comments={comments}
         onCommentAdded={(newComment) =>
-          setComments((prev) => [newComment, ...prev])
+          setComments((prev) => [...prev, newComment])
         }
-        onCommentDeleted={(deletedId) =>
-          setComments((prev) => prev.filter((c) => c._id !== deletedId))
-        }
+        onCommentDeleted={handleCommentDeleted}
       />
     </main>
   );

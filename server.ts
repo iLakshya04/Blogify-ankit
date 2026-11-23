@@ -37,7 +37,10 @@ interface StoredComment {
   content: string;
   blogId: string;
   authorId: string;
+  parentComment: string | null;
+  isDeleted: boolean;
   createdAt: string;
+  updatedAt?: string;
 }
 
 interface StoreData {
@@ -148,15 +151,30 @@ function populateBlog(blog: StoredBlog, users: StoredUser[], includeAuthorEmail 
 }
 
 function populateComment(comment: StoredComment, users: StoredUser[]) {
+  if (comment.isDeleted) {
+    return {
+      _id: comment._id,
+      content: "",
+      blog: comment.blogId,
+      parentComment: comment.parentComment ?? null,
+      isDeleted: true,
+      author: null,
+      createdAt: comment.createdAt,
+      updatedAt: comment.updatedAt || comment.createdAt,
+    };
+  }
   const author = users.find((u) => u._id === comment.authorId);
   return {
     _id: comment._id,
     content: comment.content,
     blog: comment.blogId,
+    parentComment: comment.parentComment ?? null,
+    isDeleted: false,
     author: author
       ? { _id: author._id, name: author.name }
       : { _id: comment.authorId, name: "Anonymous" },
     createdAt: comment.createdAt,
+    updatedAt: comment.updatedAt || comment.createdAt,
   };
 }
 
@@ -327,7 +345,7 @@ async function startServer() {
     }
     const comments = store.comments
       .filter((c) => c.blogId === blog._id)
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
       .map((c) => populateComment(c, store.users));
 
     return res.status(200).json({
@@ -429,7 +447,7 @@ async function startServer() {
   });
 
   app.post("/api/blogs/:blogId/comments", protect, (req: AuthedRequest, res) => {
-    const { content } = req.body ?? {};
+    const { content, parentComment } = req.body ?? {};
     if (typeof content !== "string" || !content.trim()) {
       return res.status(400).json({ message: "Comment content is required" });
     }
@@ -443,12 +461,34 @@ async function startServer() {
       return res.status(404).json({ message: "Blog not found" });
     }
 
+    let resolvedParentId: string | null = null;
+    if (parentComment !== undefined && parentComment !== null && parentComment !== "") {
+      if (typeof parentComment !== "string") {
+        return res.status(400).json({ message: "Invalid parent comment ID" });
+      }
+      const parent = store.comments.find((c) => c._id === parentComment);
+      if (!parent) {
+        return res.status(404).json({ message: "Parent comment not found" });
+      }
+      if (parent.blogId !== blog._id) {
+        return res.status(400).json({ message: "Parent comment does not belong to this blog" });
+      }
+      if (parent.isDeleted) {
+        return res.status(400).json({ message: "Cannot reply to a deleted comment" });
+      }
+      resolvedParentId = parent._id;
+    }
+
+    const now = new Date().toISOString();
     const comment: StoredComment = {
       _id: createId(),
       content: content.trim(),
       blogId: blog._id,
       authorId: req.user!._id,
-      createdAt: new Date().toISOString(),
+      parentComment: resolvedParentId,
+      isDeleted: false,
+      createdAt: now,
+      updatedAt: now,
     };
 
     store.comments.push(comment);
@@ -463,13 +503,53 @@ async function startServer() {
     if (idx === -1) {
       return res.status(404).json({ message: "Comment not found" });
     }
-    if (store.comments[idx].authorId !== req.user!._id) {
+
+    const comment = store.comments[idx];
+    if (comment.isDeleted) {
+      return res.status(400).json({ message: "Comment is already deleted" });
+    }
+    if (comment.authorId !== req.user!._id) {
       return res.status(403).json({ message: "You are not authorized to delete this comment" });
     }
 
+    const hasReplies = store.comments.some((c) => c.parentComment === comment._id);
+    if (hasReplies) {
+      comment.isDeleted = true;
+      comment.content = "";
+      comment.updatedAt = new Date().toISOString();
+      writeStore(store);
+      return res.status(200).json({
+        message: "Comment deleted",
+        softDeleted: true,
+        comment: populateComment(comment, store.users),
+      });
+    }
+
+    const removedIds: string[] = [comment._id];
+    let ancestorId = comment.parentComment ?? null;
     store.comments.splice(idx, 1);
+
+    // Prune any soft-deleted ancestors that no longer have remaining child replies.
+    while (ancestorId) {
+      const ancestorIdx = store.comments.findIndex((c) => c._id === ancestorId);
+      if (ancestorIdx === -1) break;
+      const ancestor = store.comments[ancestorIdx];
+      if (!ancestor.isDeleted) break;
+
+      const remainingChildren = store.comments.some((c) => c.parentComment === ancestor._id);
+      if (remainingChildren) break;
+
+      removedIds.push(ancestor._id);
+      ancestorId = ancestor.parentComment ?? null;
+      store.comments.splice(ancestorIdx, 1);
+    }
+
     writeStore(store);
-    return res.status(200).json({ message: "Comment deleted" });
+    return res.status(200).json({
+      message: "Comment deleted",
+      softDeleted: false,
+      removedIds,
+    });
   });
 
   app.use("/api", (_req, res) => {

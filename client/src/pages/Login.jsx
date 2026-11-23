@@ -48,11 +48,11 @@ export default function Login() {
 
   return (
     <main className="px-4 py-12 sm:py-16">
-      <div className="max-w-md mx-auto bg-white border border-gray-200 rounded-xl p-8">
-        <h1 className="font-serif text-2xl font-bold tracking-tight text-gray-900">
+      <div className="max-w-md mx-auto bg-white border border-stone-200 rounded-xl p-8">
+        <h1 className="font-display text-2xl font-bold tracking-tight text-[#111214]">
           Welcome back
         </h1>
-        <p className="mt-1.5 text-sm text-gray-600">
+        <p className="mt-1.5 text-sm text-stone-600">
           Sign in to write stories and join the conversation.
         </p>
 
@@ -70,7 +70,7 @@ export default function Login() {
           <div>
             <label
               htmlFor="login-email"
-              className="block text-sm font-medium text-gray-800 mb-1.5"
+              className="block text-sm font-medium text-stone-800 mb-1.5"
             >
               Email
             </label>
@@ -81,14 +81,14 @@ export default function Login() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
-              className="w-full px-3.5 py-2.5 text-sm text-gray-900 bg-white border border-gray-200 rounded-lg placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+              className="w-full px-3.5 py-2.5 text-sm text-[#111214] bg-white border border-stone-200 rounded-lg placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-amber-600 focus:border-transparent"
             />
           </div>
 
           <div>
             <label
               htmlFor="login-password"
-              className="block text-sm font-medium text-gray-800 mb-1.5"
+              className="block text-sm font-medium text-stone-800 mb-1.5"
             >
               Password
             </label>
@@ -99,24 +99,24 @@ export default function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="At least 6 characters"
-              className="w-full px-3.5 py-2.5 text-sm text-gray-900 bg-white border border-gray-200 rounded-lg placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+              className="w-full px-3.5 py-2.5 text-sm text-[#111214] bg-white border border-stone-200 rounded-lg placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-amber-600 focus:border-transparent"
             />
           </div>
 
           <button
             type="submit"
             disabled={submitting}
-            className="w-full py-2.5 px-4 text-sm font-medium text-white bg-gray-900 hover:bg-gray-800 disabled:opacity-60 disabled:cursor-not-allowed rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900 focus-visible:ring-offset-2"
+            className="w-full py-2.5 px-4 text-sm font-medium text-white bg-[#121316] hover:bg-stone-800 disabled:opacity-60 disabled:cursor-not-allowed rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 focus-visible:ring-offset-2"
           >
             {submitting ? "Signing in..." : "Sign in"}
           </button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-gray-600">
+        <p className="mt-6 text-center text-sm text-stone-600">
           Don&apos;t have an account?{" "}
           <Link
             to="/signup"
-            className="font-medium text-gray-900 hover:underline underline-offset-4"
+            className="font-medium text-[#111214] hover:text-amber-700 hover:underline underline-offset-4 transition-colors"
           >
             Create one
           </Link>

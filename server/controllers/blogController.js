@@ -1,6 +1,7 @@
 import { deleteImage, uploadImageBuffer } from "../config/cloudinary.js";
 import Blog from "../models/Blog.js";
 import Comment from "../models/Comment.js";
+import { serializeComment } from "./commentController.js";
 
 export async function getAllBlogs(_req, res, next) {
   try {
@@ -33,9 +34,12 @@ export async function getBlogById(req, res, next) {
 
     const comments = await Comment.find({ blog: blog._id })
       .populate("author", "name")
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: 1 });
 
-    res.status(200).json({ blog, comments });
+    res.status(200).json({
+      blog,
+      comments: comments.map(serializeComment),
+    });
   } catch (err) {
     next(err);
   }

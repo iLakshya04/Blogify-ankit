@@ -1,22 +1,57 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
-  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  --font-display: "Outfit", system-ui, -apple-system, sans-serif;
 }
 
 @layer base {
   html {
-    background-color: #fafafa;
-    color: #111827;
+    background-color: #f6f5f2;
+    color: #111214;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
   body {
     margin: 0;
-    font-family: "Inter", system-ui, -apple-system, sans-serif;
-    background-color: #fafafa;
-    color: #111827;
+    font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+    background-color: #f6f5f2;
+    color: #111214;
+  }
+}
+
+.card-3d-stage {
+  perspective: 1100px;
+}
+
+.card-3d-surface {
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transform-style: preserve-3d;
+  transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+  will-change: transform;
+}
+
+.card-3d-glare {
+  background: radial-gradient(
+    260px circle at var(--gx, 50%) var(--gy, 50%),
+    rgba(245, 158, 11, 0.16),
+    rgba(234, 88, 12, 0.04) 45%,
+    transparent 75%
+  );
+  opacity: var(--glare-opacity, 0);
+  transition: opacity 180ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-3d-surface {
+    transform: none !important;
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+  }
+
+  .card-3d-glare {
+    display: none;
   }
 }

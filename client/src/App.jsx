@@ -41,39 +41,47 @@ export default function App() {
     <AuthProvider>
       <BrowserRouter>
         <AuthRedirectListener />
-        <div className="min-h-screen bg-[#FAFAFA] text-[#111827]">
+        <div className="min-h-screen flex flex-col bg-[#F6F5F2] text-[#111214]">
           <Navbar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/blogs/:id" element={<BlogDetail />} />
-            <Route
-              path="/write"
-              element={
-                <ProtectedRoute>
-                  <CreateBlog />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/edit/:id"
-              element={
-                <ProtectedRoute>
-                  <EditBlog />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/my-blogs"
-              element={
-                <ProtectedRoute>
-                  <MyBlogs />
-                </ProtectedRoute>
-              }
-            />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <div className="flex-1">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/blogs/:id" element={<BlogDetail />} />
+              <Route
+                path="/write"
+                element={
+                  <ProtectedRoute>
+                    <CreateBlog />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/edit/:id"
+                element={
+                  <ProtectedRoute>
+                    <EditBlog />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/my-blogs"
+                element={
+                  <ProtectedRoute>
+                    <MyBlogs />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </div>
+          <footer className="mt-16 border-t border-stone-200 bg-white">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-stone-500">
+              <span className="font-display font-semibold text-stone-800">Blogify</span>
+              <span>Built with React, Express, MongoDB &amp; Cloudinary</span>
+            </div>
+          </footer>
         </div>
       </BrowserRouter>
     </AuthProvider>

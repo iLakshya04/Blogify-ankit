@@ -4,10 +4,16 @@ const commentSchema = new mongoose.Schema(
   {
     content: {
       type: String,
-      required: [true, "Comment content is required"],
       trim: true,
-      minlength: [1, "Comment cannot be empty"],
+      default: "",
       maxlength: [1000, "Comment cannot exceed 1000 characters"],
+      validate: {
+        validator(value) {
+          if (this.isDeleted) return true;
+          return typeof value === "string" && value.trim().length >= 1;
+        },
+        message: "Comment content is required",
+      },
     },
     blog: {
       type: mongoose.Schema.Types.ObjectId,
@@ -19,6 +25,16 @@ const commentSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
+    },
+    parentComment: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Comment",
+      default: null,
+      index: true,
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true }

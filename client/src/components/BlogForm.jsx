@@ -113,7 +113,7 @@ export default function BlogForm({
       <div>
         <label
           htmlFor="blog-title"
-          className="block text-sm font-medium text-gray-800 mb-2"
+          className="block text-sm font-medium text-stone-800 mb-2"
         >
           Title
         </label>
@@ -124,7 +124,7 @@ export default function BlogForm({
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Give your story a clear, compelling title"
           maxLength={150}
-          className="w-full px-4 py-3 text-lg font-medium text-gray-900 bg-white border border-gray-200 rounded-xl placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-shadow"
+          className="w-full px-4 py-3 text-lg font-medium text-[#111214] bg-white border border-stone-200 rounded-xl placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-amber-600 focus:border-transparent transition-shadow"
         />
       </div>
 
@@ -132,11 +132,11 @@ export default function BlogForm({
         <div className="flex items-center justify-between mb-2">
           <label
             htmlFor="cover-image-input"
-            className="block text-sm font-medium text-gray-800"
+            className="block text-sm font-medium text-stone-800"
           >
             Cover image
           </label>
-          <span className="text-xs text-gray-500">JPG, PNG, or WEBP up to 5MB</span>
+          <span className="text-xs text-stone-500">JPG, PNG, or WEBP up to 5MB</span>
         </div>
 
         <label
@@ -144,32 +144,32 @@ export default function BlogForm({
           className="block cursor-pointer group"
         >
           {previewUrl ? (
-            <div className="relative rounded-xl overflow-hidden border border-gray-200 bg-gray-100">
+            <div className="relative rounded-xl overflow-hidden border border-stone-200 bg-stone-100">
               <img
                 src={previewUrl}
                 alt="Cover preview"
                 referrerPolicy="no-referrer"
                 className="w-full max-h-[340px] object-cover"
               />
-              <div className="px-4 py-2.5 bg-white border-t border-gray-200 flex items-center justify-between text-sm text-gray-700 group-hover:text-gray-900">
+              <div className="px-4 py-2.5 bg-white border-t border-stone-200 flex items-center justify-between text-sm text-stone-700 group-hover:text-amber-700 transition-colors">
                 <span className="inline-flex items-center gap-2 font-medium">
                   <Upload className="w-4 h-4" />
                   {isEdit || coverFile ? "Change cover image" : "Choose another image"}
                 </span>
                 {coverFile && (
-                  <span className="text-xs text-gray-500 truncate max-w-[200px]">
+                  <span className="text-xs text-stone-500 truncate max-w-[200px]">
                     {coverFile.name}
                   </span>
                 )}
               </div>
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center py-12 px-6 border border-dashed border-gray-300 rounded-xl bg-white hover:border-gray-400 hover:bg-gray-50/50 transition-colors text-center">
-              <ImagePlus className="w-8 h-8 text-gray-400 mb-3" />
-              <p className="text-sm font-medium text-gray-800">
+            <div className="flex flex-col items-center justify-center py-12 px-6 border border-dashed border-stone-300 rounded-xl bg-white hover:border-amber-600/60 hover:bg-stone-50/60 transition-colors text-center">
+              <ImagePlus className="w-8 h-8 text-stone-400 mb-3" />
+              <p className="text-sm font-medium text-stone-800">
                 Click to upload a cover image
               </p>
-              <p className="mt-1 text-xs text-gray-500">
+              <p className="mt-1 text-xs text-stone-500">
                 Recommended 16:9 landscape image (max 5MB)
               </p>
             </div>
@@ -189,11 +189,11 @@ export default function BlogForm({
         <div className="flex items-center justify-between mb-2">
           <label
             htmlFor="blog-body"
-            className="block text-sm font-medium text-gray-800"
+            className="block text-sm font-medium text-stone-800"
           >
             Story
           </label>
-          <span className="text-xs text-gray-500 tabular-nums">
+          <span className="text-xs text-stone-500 tabular-nums">
             {wordCount} {wordCount === 1 ? "word" : "words"}
           </span>
         </div>
@@ -202,7 +202,7 @@ export default function BlogForm({
           value={body}
           onChange={(e) => setBody(e.target.value)}
           placeholder="Write your story here..."
-          className="w-full min-h-[300px] px-4 py-3.5 text-base leading-relaxed text-gray-900 bg-white border border-gray-200 rounded-xl placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-shadow resize-y"
+          className="w-full min-h-[300px] px-4 py-3.5 text-base leading-relaxed text-[#111214] bg-white border border-stone-200 rounded-xl placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-amber-600 focus:border-transparent transition-shadow resize-y"
         />
       </div>
 
@@ -210,7 +210,7 @@ export default function BlogForm({
         <button
           type="submit"
           disabled={submitting}
-          className="px-5 py-2.5 text-sm font-medium text-white bg-gray-900 hover:bg-gray-800 disabled:opacity-60 disabled:cursor-not-allowed rounded-lg transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900 focus-visible:ring-offset-2"
+          className="px-5 py-2.5 text-sm font-medium text-white bg-[#121316] hover:bg-stone-800 disabled:opacity-60 disabled:cursor-not-allowed rounded-lg transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 focus-visible:ring-offset-2"
         >
           {submitting ? submittingLabel : submitLabel}
         </button>
